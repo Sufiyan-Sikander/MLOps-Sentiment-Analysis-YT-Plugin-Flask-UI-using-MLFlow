@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YT Sentiment — Comment Analysis Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="signal"><span class="dot" id="signalDot"></span><span class="signal-label">SIGNAL: IDLE</span></div>
+  <div class="brand">YT<span>/</span>SENTIMENT</div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">COMMENT ANALYSIS ENGINE</p>
+    <h1>Know what a video's<br>comment section actually feels.</h1>
+    <p class="sub">Paste a YouTube link. Get sentiment, volume, and language signal in seconds — pulled straight from a live ML pipeline (LightGBM + Bag-of-Words), not a mockup.</p>
+
+    <form id="analyzeForm" class="scrub-form">
+      <input type="text" id="videoInput" placeholder="https://www.youtube.com/watch?v=… or just the video ID" autocomplete="off" required>
+      <button type="submit" id="analyzeBtn">ANALYZE <span>▸</span></button>
+    </form>
+
+    <div class="scrubber" id="scrubber" aria-hidden="true">
+      <div class="scrubber-fill" id="scrubberFill"></div>
+      <div class="scrubber-head" id="scrubberHead"></div>
+    </div>
+    <p class="status-line" id="statusLine"></p>
+  </section>
+
+  <section id="results" class="results hidden">
+
+    <div class="timestamp-row">
+      <span class="ts">00:01</span><span class="ts-label">INGEST</span>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric"><div class="metric-label">Total Comments</div><div class="metric-value" id="mTotal">—</div></div>
+      <div class="metric"><div class="metric-label">Unique Commenters</div><div class="metric-value" id="mUnique">—</div></div>
+      <div class="metric"><div class="metric-label">Avg Comment Length</div><div class="metric-value" id="mAvgLen">—</div></div>
+      <div class="metric"><div class="metric-label">Avg Sentiment Score</div><div class="metric-value" id="mAvgSent">—</div></div>
+    </div>
+
+    <div class="timestamp-row">
+      <span class="ts">00:02</span><span class="ts-label">MODEL — SENTIMENT DISTRIBUTION</span>
+    </div>
+    <div class="panel img-panel"><img id="chartImg" alt="Sentiment distribution chart"></div>
+
+    <div class="timestamp-row">
+      <span class="ts">00:03</span><span class="ts-label">TIMELINE — SENTIMENT OVER TIME</span>
+    </div>
+    <div class="panel img-panel"><img id="trendImg" alt="Sentiment trend over time"></div>
+
+    <div class="timestamp-row">
+      <span class="ts">00:04</span><span class="ts-label">LANGUAGE — WORD FREQUENCY</span>
+    </div>
+    <div class="panel img-panel"><img id="cloudImg" alt="Comment wordcloud"></div>
+
+    <div class="timestamp-row">
+      <span class="ts">00:05</span><span class="ts-label">SIGNAL — TOP 25 COMMENTS</span>
+    </div>
+    <ul class="comment-feed" id="commentFeed"></ul>
+
+  </section>
+
+  <p class="error-line hidden" id="errorLine"></p>
+</main>
+
+<footer>
+  <p>Flask · LightGBM · Bag-of-Words · MLflow · DVC — deployed on AWS EC2</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
